@@ -18,9 +18,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- ספריית QRCode.js ליצירת ברקודים וקבלות דיגיטליות -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <!-- ספריית HLS.js לסטרימינג מתקדם (DASH/HLS) -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 
@@ -158,10 +155,11 @@
             <h3 class="text-2xl font-black text-yellow-400 mb-2">ברכות! אתה מהחלוצים!</h3>
             <p class="text-gray-300 text-sm mb-6 leading-relaxed">
                 מערכת הניטור זיהתה שאתה מבין **100 הנרשמים הראשונים** ב-Smart Workspace!<br>
-                שלחנו לך הזמנה אישית ומאובטחת לתוך ה-**Mailbox** שלך. היכנס לתיבת הדואר כדי לקרוא את ההודעה המלאה, לאשר אותה ולקבל פרימיום בחינם!
+                אנו רוצים להציע לך להצטרף לצוות הבטא והמבקרים הרשמיים שלנו, לקבל ערוץ פידבק ישיר ולנסות פיצ'רים לפני כולם בחינם.
             </p>
-            <div class="flex gap-3 w-full justify-center">
-                <button onclick="window.closeBetaModal()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-black py-3 px-8 rounded-xl transition-all shadow-lg text-sm">הבנתי, תודה!</button>
+            <div class="flex gap-3 w-full">
+                <button onclick="window.closeBetaModal()" class="flex-1 bg-white/5 border border-white/10 text-gray-400 font-bold py-3 rounded-xl hover:bg-white/10 transition-colors">לא כעת</button>
+                <button onclick="window.joinBetaTeam()" class="flex-2 bg-yellow-500 hover:bg-yellow-400 text-black font-black py-3 px-6 rounded-xl transition-all shadow-lg">כן, אני רוצה להיות בטא טסטר! 🚀</button>
             </div>
         </div>
     </div>
@@ -192,9 +190,9 @@
             <div id="authChoice">
                 <div class="text-center mb-8"><div class="text-5xl mb-4">🌍</div><h3 class="text-2xl font-bold">חשבון משפחתי / צוותי</h3></div>
                 <div class="space-y-4">
-                    <button onclick="window.showForm('register')" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all">הרשמה לחשבון חדש</button>
-                    <button onclick="window.showForm('login')" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition-all border border-white/10">התחברות לחשבון קיים</button>
-                    <button onclick="window.closeModal()" class="w-full text-gray-500 text-sm hover:underline py-2 text-center block font-medium">המשך כאורח זמני</button>
+                    <button onclick="window.showForm('register')" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl animate-pulse">הרשמה לחשבון חדש</button>
+                    <button onclick="window.showForm('login')" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl border border-white/10">התחברות לחשבון קיים</button>
+                    <button onclick="window.closeModal()" class="w-full text-gray-500 text-sm hover:underline py-2 block">המשך כאורח</button>
                 </div>
             </div>
             <div id="registerForm" class="hidden">
@@ -212,7 +210,7 @@
                 <div class="space-y-4">
                     <input type="email" id="loginEmail" placeholder="אימייל" class="input-style">
                     <input type="password" id="loginPassword" placeholder="סיסמה" class="input-style">
-                    <button id="loginSubmitBtn" onclick="window.submitLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl">כניסה</button>
+                    <button id="loginSubmitBtn" onclick="window.submitLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl shadow-md">כניסה</button>
                     <button onclick="window.showForm('choice')" class="w-full text-gray-500 text-xs py-2 block font-bold text-center">חזרה</button>
                 </div>
             </div>
@@ -231,7 +229,7 @@
     <div id="addGoalModal" class="fixed inset-0 z-[75] flex items-center justify-center hidden modal-overlay transition-opacity">
         <div class="glass-card p-8 max-w-sm w-full border-green-500/30 border shadow-2xl">
             <div class="text-5xl text-center mb-2">🔋</div>
-            <h3 class="text-2xl font-bold mb-4 text-center text-green-400">מטרה חדשה לחיסכון</h3>
+            <h3 class="text-2xl font-bold mb-4 text-center text-green-400">מטרה חדשה</h3>
             <input type="text" id="goalTitle" placeholder="שם המטרה" class="input-style mb-4">
             <input type="number" id="goalTarget" placeholder="סכום יעד" class="input-style mb-4">
             <div class="flex gap-2 mb-4">
@@ -296,32 +294,23 @@
                 </div>
             </button>
             <h1 class="text-xl md:text-2xl font-black text-white hidden sm:block tracking-tight">Smart Workspace</h1>
-            <button id="homeBtn" onclick="window.showLauncher()" class="hidden bg-white/10 text-white text-xs px-4 py-2 rounded-xl border border-white/10 font-bold items-center gap-2 hover:bg-white/20 transition">🏠 ראשי</button>
+            <button id="homeBtn" onclick="window.showLauncher()" class="hidden bg-white/10 text-white text-xs px-4 py-2 rounded-xl border border-white/10 font-bold items-center gap-2 hover:bg-white/20">🏠 ראשי</button>
         </div>
 
         <div id="appDrawer" class="absolute top-20 right-6 w-80 glass-card p-5 shadow-2xl scale-0 opacity-0 pointer-events-none transition-all duration-300">
             <h3 class="text-center text-sm text-gray-400 font-bold mb-4 border-b border-white/10 pb-2">האפליקציות שלי</h3>
             <div class="grid grid-cols-3 gap-4">
-                <div onclick="window.openApp('search')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer transition">
-                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg"><i data-lucide="search"></i></div>
-                    <span class="text-xs font-bold text-gray-200">חיפוש</span>
-                </div>
-                <div onclick="window.openApp('tasks')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer transition">
-                    <div class="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg">📝</div>
-                    <span class="text-xs font-bold text-gray-200">משימות</span>
-                </div>
-                <div onclick="window.openApp('docs')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer transition">
-                    <div class="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg">📄</div>
-                    <span class="text-xs font-bold text-gray-200">מסמכים</span>
-                </div>
+                <div onclick="window.openApp('search')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl mb-2">🔍</div><span class="text-xs font-bold text-gray-200">חיפוש</span></div>
+                <div onclick="window.openApp('tasks')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center text-2xl mb-2">📝</div><span class="text-xs font-bold text-gray-200">משימות</span></div>
+                <div onclick="window.openApp('docs')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center text-2xl mb-2">📄</div><span class="text-xs font-bold text-gray-200">מסמכים</span></div>
                 <div onclick="window.openApp('mailbox')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer relative">
                     <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-2xl mb-2">📬</div>
                     <span class="text-xs font-bold text-gray-200">Mailbox</span>
                 </div>
-                <div onclick="window.openApp('accounts')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg">👥</div><span class="text-xs font-bold text-gray-200">חשבונות</span></div>
-                <div onclick="window.openApp('gallery')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg">🖼️</div><span class="text-xs font-bold text-gray-200">גלריה</span></div>
-                <div onclick="window.openApp('cloudfiles')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg border border-white/20">☁️</div><span class="text-xs font-bold text-gray-200">ענן אחסון</span></div>
-                <div onclick="window.openApp('maps')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-2xl mb-2 shadow-lg">🗺️</div><span class="text-xs font-bold text-gray-200">מפות</span></div>
+                <div onclick="window.openApp('accounts')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-2xl mb-2">👥</div><span class="text-xs font-bold text-gray-200">חשבונות</span></div>
+                <div onclick="window.openApp('gallery')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-2xl mb-2">🖼️</div><span class="text-xs font-bold text-gray-200">גלריה</span></div>
+                <div onclick="window.openApp('cloudfiles')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-2xl mb-2">☁️</div><span class="text-xs font-bold text-gray-200">ענן אחסון</span></div>
+                <div onclick="window.openApp('maps')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer"><div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-2xl mb-2">🗺️</div><span class="text-xs font-bold text-gray-200">מפות</span></div>
                 <div onclick="window.openApp('video')" class="flex flex-col items-center p-2 hover:bg-white/10 rounded-xl cursor-pointer relative">
                     <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-2xl mb-2">🎬</div>
                     <span class="text-xs font-bold text-gray-200">SmartStream</span>
@@ -424,6 +413,7 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto mt-6">
+            
             <!-- תוכנית חינמית -->
             <div class="glass-card p-8 border border-white/10 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
                 <div>
@@ -460,6 +450,7 @@
                     <i data-lucide="credit-card" class="w-5 h-5"></i> שדרג עכשיו
                 </button>
             </div>
+
         </div>
     </div>
 
@@ -539,6 +530,7 @@
                 <textarea id="docContentInput" placeholder="התחל לכתוב את המסמך שלך כאן..." class="input-style flex-1 resize-none !bg-white/5 text-white p-4 text-lg leading-relaxed placeholder-gray-500 custom-scrollbar border-teal-500/10 focus:border-teal-400 transition-all"></textarea>
                 <div class="flex gap-4 mt-4">
                     <button onclick="window.saveDocument()" class="flex-[2] bg-teal-600 text-white font-bold py-3 rounded-xl hover:bg-teal-500 transition-colors">שמור מסמך ענן</button>
+                    <!-- כפתור יצירת מאמר AI -->
                     <button id="btnAiArticle" onclick="window.generateAIArticle()" class="flex-1 bg-indigo-600/80 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-colors border border-indigo-500 flex items-center justify-center gap-2">
                         <span>✨</span> <span class="hidden sm:inline">כתוב מאמר</span> AI
                     </button>
@@ -608,7 +600,6 @@
         </div>
     </div>
 
-    <!-- === אפליקציית חשבונות === -->
     <div id="accountsAppScreen" class="max-w-6xl mx-auto w-full flex-1 hidden flex-col animate-fade-in">
         <header class="mb-8 text-right"><h1 class="text-4xl font-black text-emerald-500">👥 Smart Accounts</h1></header>
         <div class="glass-card p-8 max-w-3xl mx-auto w-full shadow-2xl border border-emerald-500/20">
@@ -616,10 +607,12 @@
         </div>
     </div>
 
-    <!-- === 🎬 אפליקציית SmartStream (הזרמת HLS/DASH עם מראה נטפליקס) === -->
+    <!-- === 🎬 אפליקציית SmartStream המלאה (עם מצב נטפליקס שיווקי) === -->
     <div id="videoAppScreen" class="max-w-6xl mx-auto w-full flex-1 hidden flex-col animate-fade-in pb-20 font-bold relative">
+        
+        <!-- מסך טעינה לנגן -->
         <div id="smartStreamLoadingScreen" class="absolute inset-0 bg-[#0b0f19] z-[110] flex flex-col items-center justify-center transition-opacity duration-700 p-8 text-center rounded-3xl min-h-[500px] hidden opacity-0">
-            <div class="flex flex-col items-center gap-6 animate-fade-in">
+            <div class="flex flex-col items-center gap-6">
                 <div class="flex items-center justify-center text-5xl md:text-7xl font-black tracking-tight select-none mb-2" dir="ltr">
                     <span class="text-white">SmartStr</span>
                     <span class="inline-block w-[0.85em] h-[0.85em] mx-0.5 relative align-middle text-red-500 drop-shadow-lg">
@@ -635,16 +628,24 @@
         </div>
 
         <!-- מסך שיווקי (Promo Screen) למשתמשים חינמיים! -->
-        <div id="smartStreamPromoScreen" class="absolute inset-0 bg-[#000] z-[105] flex flex-col transition-opacity duration-700 rounded-3xl overflow-hidden hidden">
+        <div id="smartStreamPromoScreen" class="relative w-full h-[600px] min-h-[60vh] bg-[#000] z-[105] flex flex-col transition-opacity duration-700 rounded-3xl overflow-hidden hidden">
+            <!-- שים כאן את קישור הסרטון שלך ב-src של ה-video! -->
             <video id="promoVideoPlayer" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-60">
                 <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4" type="video/mp4">
             </video>
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-12 text-center md:text-right">
+            
+            <div class="relative z-10 flex flex-col justify-end h-full p-8 md:p-12 text-center md:text-right bg-gradient-to-t from-black via-black/50 to-transparent">
                 <h2 class="text-5xl md:text-7xl font-black text-white mb-4 drop-shadow-2xl tracking-tight">SmartStream. <span class="text-red-500">Premium.</span></h2>
-                <p class="text-xl md:text-2xl text-gray-300 max-w-2xl font-medium mb-8 leading-relaxed">הצטרף עכשיו ותהנה מספריית הקלאסיקות הענקית שלנו. בלי פרסומות, באיכות מדהימה ובסטרימינג ישיר. 🍿</p>
-                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                    <button onclick="window.openApp('billing')" class="bg-red-600 hover:bg-red-500 text-white font-black py-4 px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.4)] transition-all text-xl hover:scale-105 flex items-center justify-center gap-3"><i data-lucide="crown" class="w-6 h-6"></i> הצטרף לפרימיום עכשיו</button>
-                    <button onclick="window.showLauncher()" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold py-4 px-8 rounded-full border border-white/10 transition-all text-lg">לא תודה, חזור לראשי</button>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-2xl font-medium mb-8 leading-relaxed">
+                    הצטרף עכשיו ותהנה מספריית הקלאסיקות הענקית שלנו. בלי פרסומות, באיכות מדהימה ובסטרימינג ישיר. הסרטון שאתה רואה מאחור? זה רק הפרומו. 🍿
+                </p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start pointer-events-auto">
+                    <button onclick="window.openApp('billing')" class="bg-red-600 hover:bg-red-500 text-white font-black py-4 px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.4)] transition-all text-xl hover:scale-105 flex items-center justify-center gap-3">
+                        <i data-lucide="crown" class="w-6 h-6"></i> הצטרף לפרימיום עכשיו
+                    </button>
+                    <button onclick="window.showLauncher()" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold py-4 px-8 rounded-full border border-white/10 transition-all text-lg">
+                        לא תודה, חזור לראשי
+                    </button>
                 </div>
             </div>
         </div>
@@ -718,7 +719,7 @@
 
     <!-- 🎵 נגן המוזיקה הקבוע בתחתית -->
     <div id="musicPlayerBar" class="fixed bottom-0 left-0 right-0 bg-[#0a0f18]/95 backdrop-blur-2xl border-t border-green-500/20 p-4 transform translate-y-full transition-transform duration-500 z-[100] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] font-bold">
-        <div class="max-w-6xl mx-auto w-full flex-center justify-between gap-6 flex">
+        <div class="max-w-6xl mx-auto w-full flex items-center justify-between gap-6 flex">
             <div class="flex items-center gap-4 w-1/4 min-w-[200px]">
                 <div class="relative w-14 h-14 shrink-0"><img id="playerCover" src="https://via.placeholder.com/150" class="w-full h-full rounded-full object-cover border-2 border-gray-800 animate-spin-slow" style="animation-play-state: paused;"></div>
                 <div class="overflow-hidden w-full"><div id="playerTitle" class="text-white text-sm truncate">לא מתנגן</div><div id="playerArtist" class="text-green-400 text-xs font-semibold truncate mt-0.5 font-mono">Smart Music</div></div>
@@ -752,7 +753,7 @@
         window.unsubscribeMailboxMessages = null;
         window.unsubscribeMailboxRooms = null;
 
-        // --- שילוב מערכת תשלומים מקורית לשדרוג תוכנית פרימיום ---
+        // --- שילוב מערכת תשלומים מקורית (Payment Request API) לשדרוג תוכנית ---
         window.processSystemPayment = async () => {
             const user = window.auth.currentUser;
             if (!user) {
@@ -844,7 +845,7 @@
                     adminBtn.className = "fixed bottom-24 right-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.5)] z-[9999] border-2 border-white/20 transition-all flex items-center gap-2";
                     adminBtn.onclick = window.toggleAdminPlan; document.body.appendChild(adminBtn);
                 }
-                adminBtn.innerHTML = `<i data-lucide="crown" class="w-5 h-5"></i> מנהל: ${window.currentPlan === 'premium' ? 'Premium (ללא הגבלות)' : 'Free (מוגבל)'}`;
+                adminBtn.innerHTML = `<i data-lucide="crown" class="w-5 h-5"></i> מצב מנהל: ${window.currentPlan === 'premium' ? 'Premium (ללא הגבלות)' : 'Free (מוגבל)'}`;
                 adminBtn.style.display = 'flex'; if(window.lucide) lucide.createIcons();
             } else if (adminBtn) { adminBtn.style.display = 'none'; }
             window.updateStorageUI();
@@ -953,27 +954,20 @@
 
         window.handleProfileClick = () => { if (window.auth && window.auth.currentUser && !window.auth.currentUser.isAnonymous) { window.openApp('accounts'); } else { window.openModal(); } };
 
-        // --- פונקציית בדיקת 100 הנרשמים הראשונים למודאל בטא ---
         window.checkFirstRegisteredUsers = async (user) => {
             try {
                 const usersCollectionRef = window.collection(window.db, "artifacts", window.appId, "public", "data", "users_count");
                 const countDocRef = window.doc(usersCollectionRef, "global_counter");
                 const docSnap = await window.getDoc(countDocRef);
-                
                 let countNum = 1;
-                if (docSnap.exists()) {
-                    countNum = (docSnap.data().count || 0) + 1;
-                }
-                
+                if (docSnap.exists()) { countNum = (docSnap.data().count || 0) + 1; }
                 await window.setDoc(countDocRef, { count: countNum }, { merge: true });
-
                 const userProfileRef = window.doc(window.db, "artifacts", window.appId, "users", user.uid, "user_profiles", window.currentProfileId);
                 const profileSnap = await window.getDoc(userProfileRef);
                 const profileData = profileSnap.data();
 
                 if (profileData && profileData.beta_tester === undefined) {
                     if (countNum <= 100) {
-                        // יצירת מכתב הזמנת בטא פנימי בתיבת הדואר
                         const mailboxRef = window.doc(window.db, "artifacts", window.appId, "public", "data", `mailbox_${user.email}`, "beta_invite");
                         const inviteSnap = await window.getDoc(mailboxRef);
                         if (!inviteSnap.exists()) {
@@ -988,10 +982,7 @@
                             });
                         }
                         
-                        setTimeout(() => { 
-                            const betaModal = document.getElementById('betaTesterModal'); 
-                            if (betaModal) { betaModal.classList.remove('hidden'); betaModal.classList.add('flex'); } 
-                        }, 2000);
+                        setTimeout(() => { const betaModal = document.getElementById('betaTesterModal'); if (betaModal) { betaModal.classList.remove('hidden'); betaModal.classList.add('flex'); } }, 2000);
                     } else {
                         await window.setDoc(userProfileRef, { beta_tester: false }, { merge: true });
                     }
@@ -1012,8 +1003,8 @@
                     window.showToast("ברוך הבא לצוות בטא! 🚀 מערכת הפרימיום נפתחה עבורך.", false);
                     window.logActivity("הצטרף/ה לצוות המבקרים והבטא טסטרים");
                     
-                    const mailboxRef = window.doc(window.db, "artifacts", window.appId, "public", "data", `mailbox_${user.email}`, "beta_invite");
-                    await window.setDoc(mailboxRef, { status: "approved" }, { merge: true });
+                    const mailboxRef = window.collection(window.db, "artifacts", window.appId, "public", "data", `mailbox_${user.email}`);
+                    await window.addDoc(mailboxRef, { sender: "system@workspace.com", senderName: "הנהלת המערכת (שובל האדמין)", message: "היי! ברוך הבא לצוות בוחני הבטא הרשמי שלנו. אנו שמחים שאתה איתנו. פתחנו עבורך את כל התכונות!", timestamp: new Date().toISOString() });
                 } catch (e) { console.error("Join beta failed", e); }
             }
             window.closeBetaModal();
@@ -1082,7 +1073,7 @@
             if(!isAdmin && window.profilesData && window.profilesData.length >= 3) { return window.showToast("בתוכנית החינמית ניתן לפתוח עד 2 פרופילים נוספים בלבד."); }
             try {
                 const profileRef = window.doc(window.collection(window.db, "artifacts", window.appId, "users", window.auth.currentUser.uid, "user_profiles"));
-                await window.setDoc(profileRef, { id: profileRef.id, displayName: name, isMinor: false, isManager: false, createdAt: new Date().toISOString() });
+                await window.setDoc(profileRef, { id: profileRef.id, displayName: name, isManager: false, createdAt: new Date().toISOString() });
                 window.showToast("הפרופיל נוסף!", false); window.closeAddProfile(); if(window.loadProfiles) window.loadProfiles(window.auth.currentUser); 
             } catch(e) {}
         };
@@ -1129,11 +1120,7 @@
             try { const folderId = 'folder_' + Date.now().toString(); await window.setDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, `folders_${window.currentProfileId}`, folderId), { name: folderName, createdAt: new Date().toISOString() }); window.showToast("התיקייה נוצרה בהצלחה", false); window.closeAddFolderModal(); window.selectFolder(folderId); } catch (e) {}
         };
 
-        window.selectFolder = (folderId) => {
-            window.currentFolderId = folderId; window.renderFolders();
-            if(window.auth.currentUser && window.currentProfileId && localStorage.getItem('shoval_simulated_logout') !== 'true') { if (window.renderTasks) window.renderTasks(); } 
-            else { if (window.renderGuestTasks) window.renderGuestTasks(); }
-        };
+        window.selectFolder = (folderId) => { window.currentFolderId = folderId; window.renderFolders(); if(window.auth.currentUser && window.currentProfileId && localStorage.getItem('shoval_simulated_logout') !== 'true') { if (window.renderTasks) window.renderTasks(); } else { if (window.renderGuestTasks) window.renderGuestTasks(); } };
 
         window.renderFolders = () => {
             const container = document.getElementById('folderTabsContainer'); if (!container) return;
@@ -1265,6 +1252,7 @@
                 
                 let text = result.candidates?.[0]?.content?.parts?.[0]?.text || "לא מצאנו תשובה ברורה ברשת.";
                 const attributions = result.candidates?.[0]?.groundingMetadata?.groundingAttributions || [];
+                
                 let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b class="text-blue-300">$1</b>').replace(/\n/g, '<br>');
                 
                 let sourcesHtml = '';
@@ -1280,7 +1268,7 @@
             } catch (e) { resultsContainer.innerHTML = `<div class="text-center bg-red-500/10 border border-red-500/30 p-8 rounded-2xl max-w-lg mx-auto"><div class="text-5xl mb-4">🔌</div><p class="font-bold text-xl text-red-400 mb-2">שגיאה בתקשורת</p></div>`; }
         };
 
-        // --- 📬 אפליקציית Mailbox עם תמיכה בהודעות בטא מפורטות ומדורגות ---
+        // --- 📬 אפליקציית Mailbox ---
         window.initMailbox = () => {
             const user = window.auth.currentUser; const mailboxAddrLabel = document.getElementById('mailboxAddrLabel');
             if (user && !user.isAnonymous) { mailboxAddrLabel.textContent = `כתובת התיבה המאובטחת שלך: ${user.email} 📬`; window.listenToMailboxRooms(user.email); } 
@@ -1336,46 +1324,33 @@
             });
         };
 
-        // פונקציית תגובת הזמנת הבטא בתיבת הדואר
-        window.respondToBetaInvite = async (choice) => {
-            const user = window.auth.currentUser;
-            if (!user || !window.currentProfileId) return;
-            
-            try {
-                const mailboxRef = window.doc(window.db, "artifacts", window.appId, "public", "data", `mailbox_${user.email}`, "beta_invite");
-                const userProfileRef = window.doc(window.db, "artifacts", window.appId, "users", user.uid, "user_profiles", window.currentProfileId);
-                
-                if (choice === 'approve') {
-                    await window.updateDoc(mailboxRef, { status: "approved" });
-                    await window.setDoc(userProfileRef, { beta_tester: true }, { merge: true });
-                    
-                    window.currentPlan = 'premium';
-                    window.showToast("🎉 ברוך הבא לצוות בטא! הגדרות פרימיום הופעלו.", false);
-                    window.renderAdminTools();
-                    window.showLauncher();
-                } else if (choice === 'reject') {
-                    await window.updateDoc(mailboxRef, { status: "rejected" });
-                    await window.setDoc(userProfileRef, { beta_tester: false }, { merge: true });
-                    
-                    window.currentPlan = 'free';
-                    window.showToast("הזמנת הבטא נדחתה.", false);
-                    window.renderAdminTools();
-                    window.showLauncher();
-                }
-            } catch(e) {
-                console.error("Failed to respond to beta invite", e);
-                window.showToast("שגיאה בעיבוד הבקשה");
+        window.toggleMailboxMessage = (elementId) => {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.classList.toggle('hidden');
             }
         };
 
         window.listenToSystemMessages = () => {
-            if (window.unsubscribeMailboxMessages) window.unsubscribeMailboxMessages(); const user = window.auth.currentUser; if (!user || user.isAnonymous) return;
+            if (window.unsubscribeMailboxMessages) window.unsubscribeMailboxMessages(); 
+            const user = window.auth.currentUser; 
+            if (!user || user.isAnonymous) return;
+            
             const msgsRef = window.collection(window.db, "artifacts", window.appId, "public", "data", `mailbox_${user.email}`);
             window.unsubscribeMailboxMessages = window.onSnapshot(msgsRef, (snapshot) => {
-                const area = document.getElementById('chatMessagesArea'); if(!area) return; area.innerHTML = ''; let msgs = []; snapshot.forEach(docSnap => msgs.push(docSnap.data())); msgs.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+                const area = document.getElementById('chatMessagesArea'); 
+                if(!area) return; 
+                area.innerHTML = ''; 
+                let msgs = []; 
+                snapshot.forEach(docSnap => msgs.push({ id: docSnap.id, ...docSnap.data() })); 
+                msgs.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+                
                 msgs.forEach(m => {
-                    const dateObj = new Date(m.timestamp); const timeStr = dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'}); const dateStr = dateObj.toLocaleDateString('he-IL', {day: '2-digit', month: '2-digit'});
-                    const div = document.createElement('div'); div.className = "bg-white/5 border border-indigo-500/20 p-4 rounded-xl flex flex-col text-right w-full shadow-inner relative group mb-4 transition-all duration-300";
+                    const dateObj = new Date(m.timestamp); 
+                    const timeStr = dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'}); 
+                    const dateStr = dateObj.toLocaleDateString('he-IL', {day: '2-digit', month: '2-digit'});
+                    const div = document.createElement('div'); 
+                    div.className = "bg-white/5 border border-indigo-500/20 p-4 rounded-xl flex flex-col text-right w-full shadow-inner relative group mb-4 transition-all duration-300";
                     
                     if (m.type === "beta_invite") {
                         const isPending = m.status === "pending";
@@ -1386,6 +1361,7 @@
                         if (isApproved) statusBadge = `<span class="bg-green-500/20 text-green-400 text-xs px-2.5 py-1 rounded-full font-bold">אושר בהצלחה! 🎉</span>`;
                         if (isRejected) statusBadge = `<span class="bg-red-500/20 text-red-400 text-xs px-2.5 py-1 rounded-full font-bold">ההזמנה נדחתה ❌</span>`;
 
+                        const contentId = `msg_content_${m.id}`;
                         div.innerHTML = `
                             <div class="flex justify-between items-center mb-3">
                                 <span class="text-[10px] text-gray-500">${dateStr} | ${timeStr}</span>
@@ -1394,11 +1370,11 @@
                                     <span class="font-bold text-sm text-yellow-400 flex items-center gap-1">👑 ${m.senderName}</span>
                                 </div>
                             </div>
-                            <div class="cursor-pointer font-bold text-white text-base hover:text-indigo-300 transition-colors flex items-center gap-2" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                            <div class="cursor-pointer font-bold text-white text-base hover:text-indigo-300 transition-colors flex items-center gap-2" onclick="window.toggleMailboxMessage('${contentId}')">
                                 <span>✉️</span> הזמנה בלעדית להצטרפות לצוות בוחני הבטא! (לחץ לקריאה והרחבה)
                             </div>
-                            <div class="mt-4 border-t border-white/10 pt-4 text-sm text-gray-300 leading-relaxed hidden">
-                                <p class="mb-4">${m.message}</p>
+                            <div id="${contentId}" class="mt-4 border-t border-white/10 pt-4 text-sm text-gray-300 leading-relaxed hidden">
+                                <p class="mb-4 whitespace-pre-wrap">${m.message}</p>
                                 ${isPending ? `
                                 <div class="flex gap-3 justify-end mt-4">
                                     <button onclick="window.respondToBetaInvite('reject')" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-5 py-2 rounded-xl transition-all font-bold">דחה</button>
@@ -1412,7 +1388,8 @@
                     }
                     area.appendChild(div);
                 });
-                if(msgs.length === 0) { area.innerHTML = '<div class="text-center text-gray-500 text-xs py-10">אין הודעות מערכת כעת. 📢</div>'; } area.scrollTop = area.scrollHeight;
+                if(msgs.length === 0) { area.innerHTML = '<div class="text-center text-gray-500 text-xs py-10">אין הודעות מערכת כעת. 📢</div>'; } 
+                area.scrollTop = area.scrollHeight;
             });
         };
 
@@ -1451,7 +1428,7 @@
             window.unsubscribeTasks = window.onSnapshot(tasksRef, (snapshot) => {
                 window.allTasks = [];
                 snapshot.forEach(doc => window.allTasks.push({ id: doc.id, ...doc.data() }));
-                window.allTasks.sort((a,b) => new Date(b.createdAt) - new Date(b.createdAt));
+                window.allTasks.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
                 if(window.renderTasks) window.renderTasks();
             });
         };
@@ -1515,12 +1492,6 @@
             if(window.renderLocalMovies) window.renderLocalMovies();
         };
 
-        window.createMovieCardElement = (movie) => {
-            const card = document.createElement('div'); card.className = "movie-card relative group rounded-2xl overflow-hidden cursor-pointer shadow-lg border border-white/5 bg-white/5 p-2 backdrop-blur-md transition-all duration-300 hover:border-red-500/30 min-w-[200px] md:min-w-[250px] shrink-0";
-            card.onclick = () => window.playMovie(movie.id, movie.title, movie.desc, movie.videoUrl);
-            card.innerHTML = `<div class="h-64 rounded-xl overflow-hidden relative"><img src="${movie.poster}" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x600/1a1a2e/ffffff?text=SmartStream'"></div><div class="play-btn absolute top-1/2 left-1/2 bg-red-600 p-4 rounded-full shadow-2xl transition-all duration-300 z-10"><i data-lucide="play" class="fill-white text-white"></i></div><div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black to-transparent z-0"><h4 class="font-bold text-sm text-white truncate">${movie.title}</h4><p class="text-xs text-red-400 font-bold mt-1">${movie.category || movie.shelf} | ${movie.rating || "HLS ⚡"}</p></div>`; return card;
-        };
-
         window.renderLocalMovies = () => {
             const container = document.getElementById('smartStreamShelves'); const gridContainer = document.getElementById('smartStreamGrid'); if(!container) return;
             container.innerHTML = ''; if(gridContainer) gridContainer.innerHTML = ''; const shelves = {};
@@ -1550,8 +1521,6 @@
                 if(window.lucide) lucide.createIcons();
             } catch (error) { console.error("Search Error:", error); if(loader) loader.classList.add('hidden'); if(gridContainer) gridContainer.innerHTML = `<div class="text-center text-red-400 py-10 font-bold col-span-full">שגיאה בחיבור לארכיון.</div>`; }
         };
-
-        window.getHebrewSubtitlesVTT = (movieTitle) => { const vttContent = `WEBVTT\n\n00:00:00.000 --> 00:00:04.000\nברוכים הבאים ל-SmartStream!\n\n00:00:04.500 --> 00:00:09.000\nהסרט: ${movieTitle}\n\n00:00:09.500 --> 00:00:15.000\nהמערכת פותחה על ידי שובל 🚀\nצפייה נעימה!`; const blob = new Blob([vttContent], { type: 'text/vtt' }); return URL.createObjectURL(blob); };
 
         window.playMovieDirectFallback = (identifier, title, desc, fallbackUrl) => {
             const videoEl = document.getElementById('smartStreamVideo'); if (!videoEl) return;
@@ -1606,104 +1575,6 @@
             const playerContainer = document.getElementById('mainVideoPlayerContainer'); const heroBanner = document.getElementById('streamHeroBanner'); const videoEl = document.getElementById('smartStreamVideo');
             if(videoEl) videoEl.pause(); if(window.hlsInstance) window.hlsInstance.destroy(); 
             if(playerContainer) playerContainer.classList.add('hidden'); if(heroBanner) heroBanner.classList.remove('hidden');
-        };
-
-        // --- 🎵 לוגיקת אפליקציית המוזיקה עם הגבלת 30 שניות ---
-        window.musicDatabase = []; window.currentSongIndex = -1; window.isPlaying = false;
-        window.PIPED_INSTANCES = [ "https://pipedapi.kavin.rocks", "https://pipedapi.tokhmi.xyz", "https://pipedapi.moomoo.me", "https://piped-api.garudalinux.org" ];
-        window.currentInstanceIdx = 0; window.getPipedUrl = (endpoint) => { return `${window.PIPED_INSTANCES[window.currentInstanceIdx]}${endpoint}`; };
-
-        window.initMusicApp = () => { const list = document.getElementById('musicTracksList'); if (list && list.innerHTML.trim() === '') { window.executeMusicSearch("Top hits"); } };
-        window.searchMusic = () => { const musicInput = document.getElementById('musicSearchInput'); const queryVal = musicInput ? musicInput.value.trim() : ''; if(!queryVal) return window.showToast("נא להזין שם שיר או זמר", true); window.executeMusicSearch(queryVal); };
-
-        window.executeMusicSearch = async (queryVal) => {
-            const list = document.getElementById('musicTracksList'); const loader = document.getElementById('musicLoader'); const header = document.getElementById('musicResultsHeader');
-            if(header) header.textContent = `תוצאות חיפוש עבור: "${queryVal}"`; if(list) list.innerHTML = ''; if(loader) loader.classList.remove('hidden');
-
-            try {
-                const searchUrl = window.getPipedUrl(`/search?q=${encodeURIComponent(queryVal)}&filter=music_videos`); const res = await fetch(searchUrl); const data = await res.json();
-                if(loader) loader.classList.add('hidden');
-                if (!data.items || data.items.length === 0) {
-                    const fallbackUrl = window.getPipedUrl(`/search?q=${encodeURIComponent(queryVal)}&filter=all`); const fallbackRes = await fetch(fallbackUrl); const fallbackData = await fallbackRes.json();
-                    if (!fallbackData.items || fallbackData.items.length === 0) { if(list) list.innerHTML = `<div class="text-center text-gray-500 py-10 font-bold">לא נמצאו שירים.</div>`; return; }
-                    data.items = fallbackData.items;
-                }
-                const videoItems = data.items.filter(item => item.type === 'video');
-                window.musicDatabase = videoItems.map((track, idx) => {
-                    const durationSec = parseInt(track.duration) || 0; const min = Math.floor(durationSec / 60); const sec = durationSec % 60; const videoId = track.url.split('v=')[1] || track.url.split('/').pop();
-                    return { id: idx, videoId: videoId, title: track.title || "Unknown Track", artist: track.uploaderName || "Unknown Artist", cover: track.thumbnail || "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=400", duration: durationSec > 0 ? `${min}:${sec < 10 ? '0' : ''}${sec}` : "Live" };
-                });
-                window.renderMusicTracks();
-            } catch (error) { console.warn("Piped instance error, switching instance...", error); window.currentInstanceIdx = (window.currentInstanceIdx + 1) % window.PIPED_INSTANCES.length; window.executeMusicSearch(queryVal); }
-        };
-
-        window.renderMusicTracks = () => {
-            const list = document.getElementById('musicTracksList'); if(!list) return; list.innerHTML = '';
-            window.musicDatabase.forEach((song, index) => {
-                const div = document.createElement('div'); div.className = "flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-xl transition cursor-pointer group border border-transparent hover:border-green-500/30"; div.onclick = () => window.playMusic(index);
-                div.innerHTML = `<div class="flex items-center gap-4"><div class="w-12 h-12 relative rounded-md overflow-hidden shrink-0"><img src="${song.cover}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><i data-lucide="play" class="text-white w-5 h-5 fill-white"></i></div></div><div class="overflow-hidden"><h4 class="text-white font-bold text-sm truncate pr-1">${song.title}</h4><p class="text-gray-400 text-xs mt-1 truncate pr-1">${song.artist}</p></div></div>`;
-                list.appendChild(div);
-            });
-            if(window.lucide) lucide.createIcons();
-        };
-
-        window.playMusic = async (index) => {
-            const song = window.musicDatabase[index]; if (!song) return; window.currentSongIndex = index;
-            const playerBar = document.getElementById('musicPlayerBar'); const audio = document.getElementById('smartAudioElement'); const titleEl = document.getElementById('playerTitle'); const artistEl = document.getElementById('playerArtist'); const coverEl = document.getElementById('playerCover');
-            if(titleEl) titleEl.textContent = song.title; if(artistEl) artistEl.textContent = song.artist; if(coverEl) coverEl.src = song.cover; if(playerBar) playerBar.classList.remove('translate-y-full');
-            
-            if (song.videoId) {
-                window.showToast("מחלץ ערוץ אודיו מיוטיוב... ⚡", false);
-                try {
-                    const streamUrl = window.getPipedUrl(`/streams/${song.videoId}`); const res = await fetch(streamUrl); const data = await res.json();
-                    if (data.audioStreams && data.audioStreams.length > 0) { const optimalStream = data.audioStreams.find(s => s.mimeType && (s.mimeType.includes('audio/mp4') || s.mimeType.includes('m4a'))) || data.audioStreams[0]; song.url = optimalStream.url; } 
-                    else { throw new Error("No audio streams found"); }
-                } catch(e) { console.warn("Piped extract failed, switching instance...", e); window.currentInstanceIdx = (window.currentInstanceIdx + 1) % window.PIPED_INSTANCES.length; setTimeout(() => window.playMusic(index), 1000); return; }
-            }
-
-            if(!audio) return; audio.src = song.url; audio.load();
-            audio.onerror = () => { console.error("Audio Playback Error:", audio.error); window.showToast("פורמט השמע לא נתמך במכשיר זה, מדלג לשיר הבא...", true); setTimeout(() => window.nextSong(), 2000); };
-            const playPromise = audio.play();
-            if (playPromise !== undefined) { playPromise.then(() => { window.isPlaying = true; window.updatePlayButtonUI(); if(coverEl) coverEl.style.animationPlayState = 'running'; }).catch(err => { console.error("Audio Auto-Play Error:", err); window.showToast("מדיניות הדפדפן מנעה הפעלה אוטומטית. לחץ פליי.", false); }); }
-            if(window.logActivity) window.logActivity("האזין לשיר: " + song.title);
-        };
-
-        window.togglePlayPause = () => {
-            const audio = document.getElementById('smartAudioElement'); const coverEl = document.getElementById('playerCover'); if(!audio) return;
-            if (window.currentSongIndex === -1) { if (window.musicDatabase.length > 0) window.playMusic(0); return; }
-            if (window.isPlaying) { audio.pause(); window.isPlaying = false; if(coverEl) coverEl.style.animationPlayState = 'paused'; } 
-            else { audio.play(); window.isPlaying = true; if(coverEl) coverEl.style.animationPlayState = 'running'; }
-            window.updatePlayButtonUI();
-        };
-
-        window.updatePlayButtonUI = () => { const icon = document.getElementById('playPauseIcon'); if(!icon) return; if (window.isPlaying) { icon.setAttribute('data-lucide', 'pause'); } else { icon.setAttribute('data-lucide', 'play'); } if(window.lucide) lucide.createIcons(); };
-        window.nextSong = () => { if (window.currentSongIndex < window.musicDatabase.length - 1) { window.playMusic(window.currentSongIndex + 1); } else { window.playMusic(0); } };
-        window.prevSong = () => { if (window.currentSongIndex > 0) { window.playMusic(window.currentSongIndex - 1); } };
-        window.closeMusicPlayer = () => { const audio = document.getElementById('smartAudioElement'); const playerBar = document.getElementById('musicPlayerBar'); const coverEl = document.getElementById('playerCover'); if(audio) audio.pause(); window.isPlaying = false; window.updatePlayButtonUI(); if(coverEl) coverEl.style.animationPlayState = 'paused'; if(playerBar) playerBar.classList.add('translate-y-full'); };
-
-        window.startYtProgressTimer = () => {
-            const audio = document.getElementById('smartAudioElement'); const progress = document.getElementById('musicProgressBar'); const currTimeLabel = document.getElementById('currentTimeDisplay'); const durLabel = document.getElementById('durationDisplay');
-            if(!audio || !progress) return;
-            const formatTime = (seconds) => { if(isNaN(seconds) || seconds === undefined) return "0:00"; const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60); return `${m}:${s < 10 ? '0' : ''}${s}`; };
-            audio.addEventListener('timeupdate', () => {
-                if (audio.duration) {
-                    progress.value = (audio.currentTime / audio.duration) * 100;
-                    if(currTimeLabel) currTimeLabel.textContent = formatTime(audio.currentTime);
-                    if(durLabel) durLabel.textContent = formatTime(audio.duration);
-
-                    // הגבלת 30 שניות בתוכנית חינמית
-                    if (window.currentPlan === 'free' && audio.currentTime >= 30) {
-                        audio.pause();
-                        audio.currentTime = 0;
-                        window.isPlaying = false;
-                        window.updatePlayButtonUI();
-                        const coverEl = document.getElementById('playerCover');
-                        if (coverEl) coverEl.style.animationPlayState = 'paused';
-                        window.showToast("🔒 בתוכנית החינמית ניתן להאזין עד 30 שניות משיר. שדרג לפרימיום לשמיעה ללא הגבלה!", true);
-                    }
-                }
-            });
-            audio.addEventListener('ended', window.nextSong);
         };
 
         window.addEventListener('DOMContentLoaded', () => {
