@@ -281,21 +281,76 @@
         </div>
     </div>
 
-    <!-- === חנות ושדרוגים (Billing) === -->
+    <!-- === חנות ושדרוגים (Smart Store) === -->
     <div id="billingAppScreen" class="max-w-6xl mx-auto w-full flex-1 hidden flex-col animate-fade-in pb-10">
-        <header class="mb-8 text-center md:text-right">
+        <header class="mb-8 text-center md:text-right flex flex-col md:flex-row justify-between items-center gap-4 border-b border-white/10 pb-6">
             <h1 class="text-4xl font-black text-yellow-500 flex items-center justify-center md:justify-start gap-3"><span>⭐</span> Smart Store</h1>
+            <div class="flex items-center gap-4 bg-yellow-500/10 p-3 rounded-2xl border border-yellow-500/20">
+                <span class="text-xs text-yellow-500 font-bold uppercase">הארנק שלך:</span>
+                <span class="text-xl font-black text-white" id="storeSMCBalanceDisplay">0 SMC</span>
+            </div>
         </header>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto mt-6">
+
+        <!-- כפתורי ניווט בחנות -->
+        <div class="flex gap-2 justify-center mb-8 bg-white/5 p-1.5 rounded-2xl border border-white/10 max-w-sm mx-auto w-full">
+            <button onclick="window.switchStoreTab('plans')" id="storeTab_plans" class="flex-1 bg-yellow-500 text-black font-bold py-2 rounded-xl text-sm transition-all shadow-md">תוכניות פרימיום</button>
+            <button onclick="window.switchStoreTab('exchange')" id="storeTab_exchange" class="flex-1 text-gray-400 font-bold py-2 rounded-xl text-sm transition-all hover:bg-white/5">המרה וקרדיטים 🪙</button>
+        </div>
+
+        <!-- תצוגת תוכניות הפרימיום המקורית -->
+        <div id="storeView_plans" class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto mt-6">
             <div class="glass-card p-8 border border-white/10 flex flex-col justify-between opacity-80 hover:opacity-100 transition-all">
                 <div><h3 class="text-2xl font-bold text-gray-300 mb-2">Free Plan</h3><div class="text-4xl font-black text-white mb-6">₪0 <span class="text-base text-gray-500 font-normal">/ לתמיד</span></div>
-                <ul class="space-y-3 text-sm text-gray-400 mb-8"><li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> משימות ותיקיות ענן</li><li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> 15GB אחסון בקבצים</li><li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500"></i> חיפוש AI מוגבל (30 ליום)</li><li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500"></i> יצירת שירים מוגבלת</li><li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500"></i> חסום ל-SmartStream</li></ul></div>
+                <ul class="space-y-3 text-sm text-gray-400 mb-8"><li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> משימות ותיקיות ענן</li><li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> 15GB אחסון בקבצים</li><li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500"></i> חיפוש AI מוגבל (30 ליום)</li><li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500"></i> חסום ל-SmartStream</li></ul></div>
                 <button class="w-full bg-white/10 text-gray-300 font-bold py-3 rounded-xl border border-white/20 cursor-not-allowed">התוכנית הנוכחית שלך</button>
             </div>
+            
             <div class="glass-card p-8 border-2 border-yellow-500 shadow-[0_0_50px_rgba(234,179,8,0.15)] flex flex-col justify-between transform scale-105">
                 <div><h3 class="text-3xl font-black text-white mb-2">Premium</h3><div class="text-4xl font-black text-yellow-500 mb-6">₪19.90 <span class="text-base text-gray-500 font-normal">/ לחודש</span></div>
                 <ul class="space-y-3 text-sm text-gray-200 mb-8"><li class="flex items-center gap-2"><i data-lucide="check" class="w-5 h-5 text-yellow-500"></i> 1TB אחסון ענן</li><li class="flex items-center gap-2"><i data-lucide="check" class="w-5 h-5 text-yellow-500"></i> שימוש ללא הגבלה במנועי ה-AI</li><li class="flex items-center gap-2 font-bold text-white"><i data-lucide="check" class="w-5 h-5 text-yellow-500"></i> יצירת אינסוף שירים ב-AI Studio!</li></ul></div>
-                <button onclick="window.processSystemPayment()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-black py-4 rounded-xl shadow-lg transition-all text-lg">שדרג עכשיו</button>
+                <button onclick="window.processSystemPayment()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-black py-4 rounded-xl shadow-lg transition-all text-lg mb-2">שדרג עכשיו בכרטיס אשראי</button>
+                <div class="text-center text-xs text-gray-400 font-bold">- או -</div>
+                <button onclick="window.buyPremiumWithSMC()" class="w-full mt-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl shadow-lg transition-all text-sm border border-purple-400/30">קנה חודש תמורת 20,000 SMC 🪙</button>
+            </div>
+        </div>
+
+        <!-- תצוגת חנות ההמרות (SMC Exchange) -->
+        <div id="storeView_exchange" class="hidden flex-col gap-6 w-full max-w-4xl mx-auto mt-6">
+            <div class="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border border-purple-500/20 rounded-3xl p-6 text-center mb-4">
+                <h3 class="text-2xl font-black text-white mb-2">Exchange Center 🔄</h3>
+                <p class="text-gray-400 text-sm max-w-lg mx-auto">כאן תוכל להשתמש במטבעות ה-Smart Coins (SMC) שהרווחת בפורטל המשחקים שלנו כדי לרכוש קרדיטים, שדרוגי AI ואפילו מנוי פרימיום לעבודה!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- המרה ל-10 חיפושי AI -->
+                <div class="glass-card p-6 text-center flex flex-col justify-between items-center border border-white/10 hover:border-purple-500/30 transition-all">
+                    <div class="text-5xl my-4">🤖</div>
+                    <h4 class="font-bold text-white text-lg mb-2">חבילת 10 חיפושי AI</h4>
+                    <p class="text-xs text-gray-400 mb-6">מוסיף 10 שאילתות נוספות למכסה היומית שלך.</p>
+                    <button onclick="window.exchangeSMCForAICredits()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-3 rounded-xl flex items-center justify-center gap-2">
+                        <span>קנה ב-100 SMC</span>
+                    </button>
+                </div>
+
+                <!-- המרה ל-Premium -->
+                <div class="glass-card p-6 text-center flex flex-col justify-between items-center border-2 border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
+                    <div class="text-5xl my-4">👑</div>
+                    <h4 class="font-bold text-white text-lg mb-2">חודש Premium בחינם</h4>
+                    <p class="text-xs text-gray-400 mb-6">למה לשלם כשאפשר לשחק? קבל חודש פרימיום מלא.</p>
+                    <button onclick="window.buyPremiumWithSMC()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-black py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg">
+                        <span>קנה ב-20,000 SMC</span>
+                    </button>
+                </div>
+
+                <!-- שדרוג נפח אחסון (בקרוב) -->
+                <div class="glass-card p-6 text-center flex flex-col justify-between items-center border border-white/10 opacity-50">
+                    <div class="text-5xl my-4">☁️</div>
+                    <h4 class="font-bold text-white text-lg mb-2">הרחבת אחסון +50GB</h4>
+                    <p class="text-xs text-gray-400 mb-6">בקרוב! הרחב את כונן הרשת שלך בעזרת מטבעות בלבד.</p>
+                    <button disabled class="w-full bg-white/5 text-gray-500 font-bold py-3 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed">
+                        <span>בקרוב</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -356,8 +411,6 @@
             
             <div id="mainVideoPlayerContainer" class="relative w-full aspect-video rounded-3xl overflow-hidden mb-8 shadow-[0_0_50px_rgba(239,68,68,0.25)] hidden bg-black border border-red-500/30">
                 <video id="smartStreamVideo" class="w-full h-full bg-black" controls playsinline></video>
-                <div id="videoEndOverlay" class="absolute inset-0 bg-[#000]/95 z-50 flex-col items-center justify-center p-6 text-center hidden transition-opacity duration-500 opacity-0"><div class="max-w-2xl w-full flex flex-col items-center gap-6"><h3 class="text-3xl font-black text-white">איך היה הסרט? 🍿</h3><div class="flex gap-4"><button id="btnEndLike" onclick="window.rateCurrentMovie(true)" class="bg-emerald-600/20 text-emerald-400 border-2 border-emerald-500/30 hover:bg-emerald-500 hover:text-black py-3 px-8 rounded-2xl font-black transition-all">👍 אהבתי</button><button id="btnEndDislike" onclick="window.rateCurrentMovie(false)" class="bg-red-600/20 text-red-400 border-2 border-red-500/30 hover:bg-red-500 hover:text-white py-3 px-8 rounded-2xl font-black transition-all">👎 לא אהבתי</button></div><div class="w-full border-t border-white/10 my-4 pt-4 text-right"><h4 class="text-xl font-bold text-red-500 mb-4">מומלצים עבורך:</h4><div class="grid grid-cols-3 gap-4" id="suggestedMoviesContainer"></div></div><button onclick="window.closeVideoEndOverlay()" class="text-xs text-gray-500 underline">סגור</button></div></div>
-                <div id="videoControlsOverlay" class="absolute bottom-16 right-6 left-6 flex justify-between items-center z-40 bg-black/60 backdrop-blur-md p-4 rounded-2xl border border-white/10 pointer-events-auto"><button id="btnPlayerLike" onclick="window.toggleLikePlayingMovie()" class="bg-white/5 border border-white/10 text-white font-bold p-3 rounded-xl hover:bg-emerald-500/20 hover:text-emerald-400 transition-all flex items-center gap-2 text-xs"><i data-lucide="heart" class="w-4 h-4" id="playerLikeIcon"></i><span id="playerLikeText">הוסף לרשימה שלי</span></button><span class="text-xs text-gray-400 font-semibold">SmartStream HD</span></div>
                 <button onclick="window.closeVideoPlayer()" class="absolute top-6 left-6 bg-black/50 hover:bg-red-600 text-white rounded-full p-2 backdrop-blur-md transition-all z-[60]"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
 
@@ -433,21 +486,18 @@
     <!-- נגן מוזיקה חכם מרחף (Smart Floating Audio Player) -->
     <div id="musicPlayerBar" class="fixed bottom-0 left-0 right-0 bg-[#0a0f18]/95 backdrop-blur-2xl border-t border-green-500/30 p-4 transform translate-y-full transition-transform duration-500 z-[100] shadow-[0_-10px_40px_rgba(34,197,94,0.15)] flex flex-col items-center">
         
-        <!-- תצוגת מילים צפה (עבור שירי AI) -->
         <div id="aiLyricsDisplay" class="hidden w-full max-w-2xl text-center mb-4 pb-4 border-b border-white/10">
             <h4 class="text-purple-400 font-black text-lg mb-2" id="aiLyricsTitle">שם השיר</h4>
             <div class="music-lyrics" id="aiLyricsContent">המילים ירוצו כאן...</div>
         </div>
 
         <div class="max-w-6xl mx-auto w-full flex flex-col gap-2">
-            <!-- שורת התקדמות -->
             <div class="flex items-center gap-3 w-full">
                 <span id="audioCurrentTime" class="text-xs text-gray-400 font-mono w-10 text-right">0:00</span>
                 <input type="range" id="musicProgressBar" value="0" min="0" max="100" class="music-slider flex-1">
                 <span id="audioTotalTime" class="text-xs text-gray-400 font-mono w-10 text-left">0:00</span>
             </div>
             
-            <!-- פקדי נגן -->
             <div class="flex justify-between items-center w-full">
                 <div class="flex items-center gap-4 flex-1">
                     <div class="w-12 h-12 bg-gradient-to-tr from-green-500 to-emerald-600 rounded-lg shadow-lg flex items-center justify-center animate-pulse" id="musicPlayerIcon">
@@ -471,14 +521,13 @@
             </div>
         </div>
     </div>
-    <!-- הנגן האמיתי ב-HTML5 -->
     <audio id="smartAudioElement" class="hidden" crossorigin="anonymous"></audio>
 
     <!-- === 🎨 Smart Editor Pro === -->
     <div id="editorAppScreen" class="max-w-6xl mx-auto w-full flex-1 hidden flex-col animate-fade-in pb-10">
         <header class="mb-8 flex justify-between items-end">
             <div><h1 class="text-4xl font-black text-purple-400 flex items-center gap-3"><span>🎨</span> Smart Editor Pro & AI</h1></div>
-            <button onclick="document.getElementById('editorFileInput').click()" class="bg-purple-600 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2"><i data-lucide="file-up" class="w-5 h-5"></i> העלה קובץ מהמחשב</button>
+            <button onclick="document.getElementById('editorFileInput').click()" class="bg-purple-600 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2"><i data-lucide="file-up" class="w-5 h-5"></i> העלה קובץ</button>
             <input type="file" id="editorFileInput" accept="image/*,video/*" class="hidden" onchange="window.loadMediaToEditor(event)">
         </header>
 
@@ -486,38 +535,21 @@
             <div class="lg:col-span-4 glass-card p-6 border border-purple-500/20 shadow-xl flex flex-col gap-6 overflow-y-auto h-[65vh] custom-scrollbar">
                 <div class="flex gap-2 border-b border-white/10 pb-4">
                     <button id="tabAdjust" onclick="window.setEditorTab('adjust')" class="flex-1 bg-purple-600 text-white text-xs font-bold py-2 rounded-lg">תיקונים</button>
-                    <button id="tabChroma" onclick="window.setEditorTab('chroma')" class="flex-1 bg-white/5 text-gray-300 text-xs font-bold py-2 rounded-lg">מסך ירוק</button>
-                    <button id="tabAiCut" onclick="window.setEditorTab('ai')" class="flex-1 bg-white/5 text-gray-300 text-xs font-bold py-2 rounded-lg">חיתוך AI</button>
                     <button id="tabGenai" onclick="window.setEditorTab('genai')" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold py-2 rounded-lg">יצירה ✨</button>
                 </div>
                 
                 <div class="space-y-6 flex-1">
                     <div id="controlsAdjust" class="space-y-4">
                         <div><div class="flex justify-between text-xs mb-1"><span>בהירות</span><span id="lblBright">100%</span></div><input type="range" id="edBright" min="0" max="200" value="100" class="editor-slider" oninput="window.processEditorFrame()"></div>
-                        <div><div class="flex justify-between text-xs mb-1"><span>ניגודיות</span><span id="lblContrast">100%</span></div><input type="range" id="edContrast" min="0" max="200" value="100" class="editor-slider" oninput="window.processEditorFrame()"></div>
-                        <div><div class="flex justify-between text-xs mb-1"><span>רוויה</span><span id="lblSat">100%</span></div><input type="range" id="edSat" min="0" max="200" value="100" class="editor-slider" oninput="window.processEditorFrame()"></div>
-                    </div>
-                    <div id="controlsChroma" class="space-y-4 hidden">
-                        <div><label class="block text-xs text-gray-400 mb-2">צבע רקע להסרה</label><input type="color" id="chromaColor" value="#00ff00" class="w-full h-10 rounded-lg cursor-pointer" onchange="window.processEditorFrame()"></div>
-                        <div><div class="flex justify-between text-xs mb-1"><span>רגישות</span><span id="lblTolerance">100</span></div><input type="range" id="chromaTolerance" min="10" max="200" value="100" class="editor-slider" oninput="window.processEditorFrame()"></div>
-                    </div>
-                    <div id="controlsAi" class="space-y-4 hidden">
-                        <select id="editorBgSelect" onchange="window.processEditorFrame()" class="input-style !py-2 text-xs"><option value="transparent">רקע שקוף</option><option value="space">חלל 🌌</option><option value="neon">ניאון 🟣</option><option value="office">משרד הייטק 🖥️</option></select>
                     </div>
                     <div id="controlsGenai" class="space-y-4 hidden">
                         <textarea id="aiImagePrompt" placeholder="תאר את התמונה שתרצה..." class="input-style h-24 text-sm"></textarea>
                         <button id="btnGenerateAiImg" onclick="window.generateAiImage()" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-3 rounded-xl">✨ צור תמונה</button>
                     </div>
                 </div>
-
-                <div class="border-t border-white/10 pt-4 flex gap-2">
-                    <button onclick="window.saveEditorToCloud()" class="flex-1 bg-sky-600 text-white text-xs font-bold py-3 rounded-xl"><i data-lucide="cloud" class="w-4 h-4 inline"></i> לענן</button>
-                    <button onclick="window.downloadEditedMedia()" class="flex-1 bg-white/10 text-white text-xs font-bold py-3 rounded-xl"><i data-lucide="download" class="w-4 h-4 inline"></i> הורד</button>
-                </div>
             </div>
             <div class="lg:col-span-8 glass-card p-6 flex flex-col items-center justify-center relative overflow-hidden h-[65vh] bg-black/60 rounded-3xl" style="background-image: linear-gradient(45deg, #1a1a2e 25%, transparent 25%, transparent 75%, #1a1a2e 75%, #1a1a2e); background-size: 20px 20px;">
                 <div id="editorEmptyState" class="text-center text-gray-500"><div class="text-6xl mb-4">🎨</div><p class="text-lg font-bold">הסטודיו פנוי</p></div>
-                <div id="editorLoadingState" class="hidden text-center text-pink-400"><div class="loader !w-16 !h-16 !border-t-pink-500 mb-4"></div><p class="text-xl font-bold animate-pulse">מצייר...</p></div>
                 <canvas id="editorCanvas" class="max-w-full max-h-full object-contain hidden rounded-xl"></canvas>
             </div>
         </div>
@@ -561,7 +593,7 @@
     <!-- לוגיקת צד לקוח מרכזית -->
     <script>
         // ----------------------------------------------------------------------
-        // פונקציות תצוגה כלליות (מניעת שגיאות מוקדמות)
+        // פונקציות תצוגה כלליות
         // ----------------------------------------------------------------------
         window.showToast = (msg, isError = true) => {
             const toast = document.getElementById('toast');
@@ -572,18 +604,12 @@
             setTimeout(() => toast.classList.remove('show'), 4000);
         };
 
-        // ----------------------------------------------------------------------
-        // מנגנון ה"הצפנה פרטית חכמה": המפתח מתפרק, ומוזרק רק בהתחברות!
-        // ----------------------------------------------------------------------
         const _kParts = ["AIza", "SyCq-h", "MGG", "MjjZo", "rsvcgcrRPT", "EDimEcQtLBM"];
-        
         const getActiveApiKey = () => {
             const savedCustomKey = localStorage.getItem('saved_gemini_api_key');
             if (savedCustomKey && savedCustomKey.trim().length > 10) return savedCustomKey.trim();
             const user = window.auth?.currentUser;
-            if (user && !user.isAnonymous && localStorage.getItem('shoval_simulated_logout') !== 'true') {
-                return _kParts.join('');
-            }
+            if (user && !user.isAnonymous && localStorage.getItem('shoval_simulated_logout') !== 'true') return _kParts.join('');
             return null; 
         };
 
@@ -682,6 +708,7 @@
         window.unsubscribeTasks = null; window.unsubscribeFolders = null; window.unsubscribeGoals = null; window.unsubscribeDocs = null; window.unsubscribeFiles = null;
         window.currentPlan = 'free'; window.ADMIN_EMAIL = 'shovalkaufman11@gmail.com';
         window.activeChatRoomId = null; window.unsubscribeMailboxMessages = null; window.unsubscribeMailboxRooms = null;
+        window.userSMCBalance = 0; // הוספת יתרת SMC
 
         window.checkAiRateLimit = (feature) => {
             const today = new Date().toDateString(); const quotaKey = `ai_quota_${feature}_${today}`; let count = parseInt(localStorage.getItem(quotaKey)) || 0;
@@ -691,31 +718,19 @@
             localStorage.setItem(quotaKey, count + 1); return true;
         };
 
-        // --- 🔮 אפקט הבועות (Orbs) ---
-        window.orbPalettes = { home: ['rgba(59,130,246,0.8)', 'rgba(239,68,68,0.8)', 'rgba(34,197,94,0.8)', 'rgba(168,85,247,0.8)'], editor: ['rgba(168,85,247,0.8)', 'rgba(217,70,239,0.8)', 'rgba(147,51,234,0.8)'], video: ['rgba(239,68,68,0.8)', 'rgba(220,38,38,0.8)'], music: ['rgba(34,197,94,0.8)', 'rgba(22,163,74,0.8)'] };
-        window.initBackgroundOrbs = (appId = 'home') => {
-            const container = document.getElementById('orb-container'); if(!container) return; container.innerHTML = ''; 
-            const colors = window.orbPalettes[appId] || window.orbPalettes.home; 
-            for(let i = 0; i < 15; i++) {
-                const orb = document.createElement('div'); orb.className = 'memory-orb'; const size = Math.random() * 150 + 50; const color = colors[Math.floor(Math.random() * colors.length)];
-                orb.style.width = `${size}px`; orb.style.height = `${size}px`; orb.style.left = `${Math.random() * 100}%`; orb.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`; orb.style.animationDuration = `${Math.random() * 20 + 10}s`; orb.style.animationDelay = `-${Math.random() * 20}s`; orb.style.setProperty('--endX', `${(Math.random() - 0.5) * 300}px`); orb.style.setProperty('--startScale', Math.random() * 0.5 + 0.5); orb.style.setProperty('--endScale', Math.random() * 0.5 + 1.0); orb.style.setProperty('--maxOpacity', Math.random() * 0.4 + 0.3);
-                container.appendChild(orb);
-            }
-        };
-
         // --- פונקציות ניווט כלליות ---
         window.toggleAppMenu = (e) => { if(e) e.stopPropagation(); const btn = document.getElementById('appMenuBtn'); const drawer = document.getElementById('appDrawer'); if (btn && btn.classList.contains('menu-open')) { btn.classList.remove('menu-open'); drawer.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto'); } else { btn.classList.add('menu-open'); drawer.classList.add('scale-100', 'opacity-100', 'pointer-events-auto'); } };
         window.hideAllScreens = () => { document.getElementById('launcherScreen').classList.add('hidden'); ['tasks', 'docs', 'cloudfiles', 'video', 'accounts', 'gallery', 'search', 'mailbox', 'editor', 'settings', 'music', 'billing'].forEach(app => { const el = document.getElementById(`${app}AppScreen`); if(el) el.classList.add('hidden'); }); };
-        window.showLauncher = () => { window.hideAllScreens(); document.getElementById('launcherScreen').classList.remove('hidden'); document.getElementById('homeBtn').classList.add('hidden'); window.initBackgroundOrbs('home'); };
+        window.showLauncher = () => { window.hideAllScreens(); document.getElementById('launcherScreen').classList.remove('hidden'); document.getElementById('homeBtn').classList.add('hidden'); };
         
         window.openApp = (appId) => { 
             window.toggleAppMenu(); window.hideAllScreens(); document.getElementById('homeBtn').classList.remove('hidden'); 
             const screen = document.getElementById(`${appId}AppScreen`); 
-            if (screen) { screen.classList.remove('hidden'); screen.classList.add('flex'); window.initBackgroundOrbs(appId); } 
+            if (screen) { screen.classList.remove('hidden'); screen.classList.add('flex'); } 
             else { window.showToast("האפליקציה בבנייה!", false); window.showLauncher(); } 
             if(window.lucide) lucide.createIcons();
-            if (appId === 'video') { window.initSmartStream(); }
             if (appId === 'music') { window.initMusicApp(); }
+            if (appId === 'billing') { window.switchStoreTab('plans'); }
         };
 
         window.openModal = () => { document.getElementById('authModal').classList.remove('hidden'); window.showForm('choice'); };
@@ -746,9 +761,20 @@
                 const profileRef = window.doc(window.collection(window.db, "artifacts", window.appId, "users", cred.user.uid, "user_profiles"));
                 const profileData = { id: profileRef.id, displayName: name, isMinor: false, isManager: true, createdAt: new Date().toISOString() };
                 await window.setDoc(profileRef, profileData);
+                
+                // הוספת סטטוס שחקן (Game Data) עם בונוס רישום ראשוני
+                const statsRef = window.doc(window.db, "artifacts", window.appId, "users", cred.user.uid, "game_data", "stats");
+                await window.setDoc(statsRef, {
+                    xp: 0, smc: 12000, tier: 1, 
+                    unlockedSkins: ["default"], unlockedAvatars: ["🎮"], 
+                    activeSkin: "default", activeAvatar: "🎮", gamerTag: name, bio: "משתמש חדש", 
+                    createdAt: new Date().toISOString()
+                });
+
                 localStorage.setItem('shoval_simulated_logout', 'false'); 
                 sessionStorage.removeItem('shoval_current_profile_id');
-                window.showToast("החשבון נוצר בהצלחה!", false); window.closeModal(); window.selectProfile(profileData.id, profileData.displayName, false, window.gradients[0], true);
+                window.showToast("החשבון נוצר! קיבלת 12,000 SMC במתנה 🎁", false); 
+                window.closeModal(); window.selectProfile(profileData.id, profileData.displayName, false, window.gradients[0], true);
             } catch(e) { window.showToast("שגיאה ברישום החשבון", true); } finally { if(btn) { btn.disabled = false; btn.textContent = "צור חשבון"; } }
         };
 
@@ -768,7 +794,7 @@
             document.getElementById('authBtn')?.classList.remove('hidden'); document.getElementById('logoutBtn')?.classList.add('hidden'); document.getElementById('switchProfileBtn')?.classList.add('hidden');
             const statusLabel = document.getElementById('userStatusLabel'); const nameLabel = document.getElementById('userNameLabel');
             if(statusLabel) statusLabel.textContent = "מצב אורח"; if(nameLabel) nameLabel.textContent = "אורח";
-            window.currentProfileId = null; window.currentIsManager = false; window.currentPlan = 'free';
+            window.currentProfileId = null; window.currentIsManager = false; window.currentPlan = 'free'; window.userSMCBalance = 0;
             updateAiLockState(); 
         };
 
@@ -782,6 +808,18 @@
                     window.renderProfilesList(); const savedProfileId = sessionStorage.getItem('shoval_current_profile_id'); const foundProfile = window.profilesData.find(p => p.id === savedProfileId);
                     if (foundProfile) { window.selectProfile(foundProfile.id, foundProfile.displayName, foundProfile.isMinor, window.gradients[0], foundProfile.isManager); } else { document.getElementById('profilesModal')?.classList.remove('hidden'); document.getElementById('profilesModal')?.classList.add('flex'); }
                 }
+
+                // טעינת יתרת ה-SMC
+                const statsRef = window.doc(window.db, "artifacts", window.appId, "users", user.uid, "game_data", "stats");
+                const statsSnap = await window.getDoc(statsRef);
+                if (statsSnap.exists()) {
+                    window.userSMCBalance = statsSnap.data().smc || 0;
+                } else {
+                    window.userSMCBalance = 0;
+                }
+                const balanceDisp = document.getElementById('storeSMCBalanceDisplay');
+                if(balanceDisp) balanceDisp.textContent = `${window.userSMCBalance.toLocaleString()} SMC`;
+
             } catch(e) { window.resetMainUI(); }
         };
 
@@ -810,13 +848,106 @@
         window.openAddProfile = () => { document.getElementById('addProfileModal')?.classList.remove('hidden'); }; window.closeAddProfile = () => { document.getElementById('addProfileModal')?.classList.add('hidden'); };
         window.submitNewProfile = async () => { const name = document.getElementById('newProfileName').value.trim(); if(!name) return window.showToast("נא למלא שם"); try { const profileRef = window.doc(window.collection(window.db, "artifacts", window.appId, "users", window.auth.currentUser.uid, "user_profiles")); await window.setDoc(profileRef, { id: profileRef.id, displayName: name, isMinor: false, isManager: false, createdAt: new Date().toISOString() }); window.showToast("פרופיל נוסף בהצלחה!", false); window.closeAddProfile(); window.loadProfiles(window.auth.currentUser); } catch(e) {} };
 
-        window.renderAccountsScreen = () => {
-            const container = document.getElementById('accountManagerContent'); if (!container) return; const user = window.auth.currentUser;
-            if (!user || localStorage.getItem('shoval_simulated_logout') === 'true') { container.innerHTML = `<div class="text-6xl mb-4 opacity-50">🔒</div><h3 class="text-2xl font-bold text-gray-300">אזור אישי מוגן - יש להתחבר</h3>`; return; }
-            let profilesHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">`;
-            if(window.profilesData) { window.profilesData.forEach(p => { profilesHtml += `<div class="bg-white/5 border border-white/10 p-4 rounded-xl flex justify-between items-center text-right hover:bg-white/10 transition-colors"><button onclick="window.showToast('ניהול פרופיל בפיתוח', false)" class="text-xs bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-4 py-2 rounded-lg border border-emerald-500/30 transition-all font-bold">ניהול</button><div><div class="font-bold text-white text-lg">${p.displayName}</div><div class="text-[10px] text-gray-400">${p.isManager ? 'מנהל חשבון ראשי' : 'פרופיל רגיל'}</div></div></div>`; }); }
-            profilesHtml += `</div>`;
-            container.innerHTML = `<div class="w-24 h-24 bg-emerald-500 text-white rounded-full flex items-center justify-center text-5xl mx-auto mb-4 border-4 border-emerald-500/30 shadow-2xl">👤</div><h3 class="text-3xl font-extrabold text-white mb-2">מרכז ניהול החשבון</h3><p class="text-emerald-400 font-bold mb-8 text-lg">${user.email}</p><div class="border-t border-white/10 pt-8"><button onclick="window.openAddProfile()" class="text-sm bg-emerald-600 text-white font-bold px-4 py-2 rounded-lg mb-4">+ הוסף פרופיל משתמש</button>${profilesHtml}</div>`;
+        // --- 🛒 חנות פרימיום וכלכלת SMC המאוחדת ---
+        window.switchStoreTab = (tabId) => {
+            ['plans', 'exchange'].forEach(id => {
+                const btn = document.getElementById(`storeTab_${id}`);
+                const view = document.getElementById(`storeView_${id}`);
+                if(btn) {
+                    if (id === tabId) {
+                        btn.classList.add('bg-yellow-500', 'text-black', 'shadow-md');
+                        btn.classList.remove('text-gray-400');
+                    } else {
+                        btn.classList.remove('bg-yellow-500', 'text-black', 'shadow-md');
+                        btn.classList.add('text-gray-400');
+                    }
+                }
+                if(view) {
+                    if (id === tabId) {
+                        view.classList.remove('hidden');
+                        view.classList.add(id === 'plans' ? 'grid' : 'flex');
+                    } else {
+                        view.classList.add('hidden');
+                        view.classList.remove('grid', 'flex');
+                    }
+                }
+            });
+        };
+
+        window.exchangeSMCForAICredits = async () => {
+            const user = window.auth.currentUser;
+            if(!user || user.isAnonymous) return window.showToast("יש להתחבר לחשבון ענן", true);
+            
+            if (window.userSMCBalance < 100) return window.showToast("אין לך מספיק SMC!", true);
+
+            // בדיקת מגבלת המרות יומית (Anti Exploit)
+            const today = new Date().toDateString(); 
+            const limitKey = `smc_ai_exchange_${today}`; 
+            let count = parseInt(localStorage.getItem(limitKey)) || 0;
+            if (count >= 3) return window.showToast("הגעת למגבלת ההמרות היומית (3 ביום).", true);
+
+            try {
+                // מוריד יתרה ב-DB
+                const newBalance = window.userSMCBalance - 100;
+                await window.updateDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, "game_data", "stats"), {
+                    smc: newBalance
+                });
+
+                window.userSMCBalance = newBalance;
+                document.getElementById('storeSMCBalanceDisplay').textContent = `${newBalance.toLocaleString()} SMC`;
+                
+                // הוספת 10 קרדיטים על ידי החזרת המונה אחורה
+                const quotaKeySearch = `ai_quota_search_${today}`;
+                let currentSearchCount = parseInt(localStorage.getItem(quotaKeySearch)) || 0;
+                localStorage.setItem(quotaKeySearch, Math.max(0, currentSearchCount - 10));
+
+                localStorage.setItem(limitKey, count + 1);
+                window.showToast("ההמרה בוצעה! קיבלת 10 קרדיטים נוספים ל-AI ✨", false);
+            } catch (e) {
+                console.error(e);
+                window.showToast("שגיאה בביצוע ההמרה", true);
+            }
+        };
+
+        window.buyPremiumWithSMC = async () => {
+            const user = window.auth.currentUser;
+            if(!user || user.isAnonymous) return window.showToast("יש להתחבר לחשבון ענן", true);
+
+            if (window.userSMCBalance < 20000) return window.showToast("אין לך מספיק SMC (נדרש 20,000)!", true);
+            
+            if (window.currentPlan === 'premium') return window.showToast("החשבון שלך כבר במצב Premium!", false);
+
+            try {
+                const newBalance = window.userSMCBalance - 20000;
+                
+                // עדכון יתרת המטבעות
+                await window.updateDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, "game_data", "stats"), {
+                    smc: newBalance
+                });
+                
+                // עדכון סטטוס פרימיום
+                const profilesRef = window.collection(window.db, "artifacts", window.appId, "users", user.uid, "user_profiles");
+                const snap = await window.getDocs(window.query(profilesRef));
+                snap.forEach(async (d) => { 
+                    if (d.data().isManager) {
+                        await window.updateDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, "user_profiles", d.id), {
+                            beta_tester: true 
+                        });
+                    }
+                });
+
+                window.userSMCBalance = newBalance;
+                document.getElementById('storeSMCBalanceDisplay').textContent = `${newBalance.toLocaleString()} SMC`;
+                
+                window.currentPlan = 'premium';
+                localStorage.setItem('smart_plan', 'premium');
+                window.renderAdminTools();
+                
+                window.showToast("מטורף! רכשת מנוי פרימיום חודשי באמצעות SMC בלבד! 👑🎉", false);
+            } catch (e) {
+                console.error(e);
+                window.showToast("שגיאה בביצוע הרכישה", true);
+            }
         };
 
         // --- שגרה וניהול משימות/מטרות ---
@@ -869,7 +1000,7 @@
             const apiToUse = getActiveApiKey(); 
             if(!apiToUse) { return window.showToast("יש להתחבר לחשבון כדי להשתמש בשירותי הבינה המלאכותית.", true); }
 
-            if (!window.checkAiRateLimit('chat')) { return window.showToast("הגעת למכסת ההודעות להיום. שדרג לפרימיום.", true); }
+            if (!window.checkAiRateLimit('chat')) { return window.showToast("הגעת למכסת ההודעות להיום. שדרג לפרימיום או המר SMC לקרדיטים.", true); }
             
             const uDiv = document.createElement('div'); uDiv.className = 'bg-white/10 p-3 rounded-2xl rounded-tr-none text-white text-sm w-[85%] self-end text-right border border-white/10 shadow-md'; uDiv.textContent = text; msgs.appendChild(uDiv);
             input.value = ''; msgs.scrollTop = msgs.scrollHeight; btn.disabled = true;
@@ -903,7 +1034,7 @@
             try { const goalId = 'goal_' + Date.now().toString(); await window.setDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, `goals_${window.currentProfileId}`, goalId), { id: goalId, title: title, targetAmount: target, currentAmount: 0, depositAmount: deposit, createdAt: new Date().toISOString() }); window.showToast("סוללת מטרה נוצרה ב-Smart Tasks!", false); } catch(e) {}
         };
 
-        // --- 🎨 Smart Editor Pro + מחולל תמונות AI ---
+        // --- 🎨 Smart Editor Pro ---
         window.editorSourceType = null; window.editorImageObj = new Image(); window.editorSourceVideo = document.createElement('video');
         window.editorSourceVideo.autoplay = true; window.editorSourceVideo.loop = true; window.editorSourceVideo.muted = true; window.editorSourceVideo.playsInline = true;
         window.editorCanvas = document.getElementById('editorCanvas'); window.editorCtx = window.editorCanvas ? window.editorCanvas.getContext('2d') : null; window.editorCurrentTab = 'adjust';
@@ -920,7 +1051,7 @@
 
         window.setEditorTab = (tabId) => {
             window.editorCurrentTab = tabId;
-            ['adjust', 'chroma', 'ai', 'genai'].forEach(tab => {
+            ['adjust', 'genai'].forEach(tab => {
                 const btn = document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`); const ctrl = document.getElementById(`controls${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
                 if(btn && ctrl) { if (tab === tabId) { btn.classList.remove('bg-white/5', 'text-gray-300'); if(tab==='genai') btn.classList.add('bg-gradient-to-r', 'from-pink-500', 'to-purple-500', 'text-white', 'shadow-lg'); else btn.classList.add('bg-purple-600', 'text-white'); ctrl.classList.remove('hidden'); } else { btn.className = "flex-1 bg-white/5 text-gray-300 text-xs font-bold py-2 rounded-lg hover:bg-white/10"; ctrl.classList.add('hidden'); } }
             }); if(tabId !== 'genai') window.processEditorFrame();
@@ -934,34 +1065,12 @@
             if (window.editorSourceType === 'image' && window.editorSourceImage) { window.editorCtx.drawImage(window.editorSourceImage, 0, 0, w, h); } else if (window.editorSourceType === 'video') { window.editorCtx.drawImage(window.editorSourceVideo, 0, 0, w, h); } else { return; }
 
             const imgData = window.editorCtx.getImageData(0, 0, w, h); const data = imgData.data;
-            const hexColor = document.getElementById('chromaColor').value; const tolerance = parseFloat(document.getElementById('chromaTolerance').value);
-            const rTarget = parseInt(hexColor.slice(1, 3), 16); const gTarget = parseInt(hexColor.slice(3, 5), 16); const bTarget = parseInt(hexColor.slice(5, 7), 16);
-            const b = parseFloat(document.getElementById('edBright').value) / 100; const c = parseFloat(document.getElementById('edContrast').value) / 100; const sat = parseFloat(document.getElementById('edSat').value) / 100;
-            const bgSelect = document.getElementById('editorBgSelect').value;
-
+            const b = parseFloat(document.getElementById('edBright').value) / 100;
             for (let i = 0; i < data.length; i += 4) {
                 let r = data[i]; let g = data[i + 1]; let b_pixel = data[i + 2]; let a = data[i + 3];
-                r = Math.min(255, Math.max(0, ((r - 128) * c + 128) * b)); g = Math.min(255, Math.max(0, ((g - 128) * c + 128) * b)); b_pixel = Math.min(255, Math.max(0, ((b_pixel - 128) * c + 128) * b));
-                const gray = 0.299 * r + 0.587 * g + 0.114 * b_pixel;
-                r = Math.min(255, Math.max(0, gray + (r - gray) * sat)); g = Math.min(255, Math.max(0, gray + (g - gray) * sat)); b_pixel = Math.min(255, Math.max(0, gray + (b_pixel - gray) * sat));
-                if (window.editorCurrentTab === 'chroma') { const distance = Math.sqrt(Math.pow(r - rTarget, 2) + Math.pow(g - gTarget, 2) + Math.pow(b_pixel - bTarget, 2)); if (distance < tolerance) { a = 0; } else if (distance < tolerance + 20) { a = Math.round(((distance - tolerance) / 20) * 255); } }
-                if (window.editorCurrentTab === 'ai') { const pixelX = (i / 4) % w; const pixelY = Math.floor((i / 4) / w); const dx = (pixelX - w/2) / (w * 0.35); const dy = (pixelY - h/2) / (h * 0.45); if (dx * dx + dy * dy > 1.0) { if (bgSelect === 'transparent') { a = 0; } else if (bgSelect === 'space') { r = 10; g = 5; b_pixel = 40; } else if (bgSelect === 'neon') { r = 120; g = 10; b_pixel = 200; } else if (bgSelect === 'office') { r = 20; g = 25; b_pixel = 35; } } }
-                data[i] = r; data[i + 1] = g; data[i + 2] = b_pixel; data[i + 3] = a;
+                data[i] = r * b; data[i + 1] = g * b; data[i + 2] = b_pixel * b; data[i + 3] = a;
             }
             window.editorCtx.putImageData(imgData, 0, 0);
-        };
-
-        window.downloadEditedMedia = () => { if (window.editorSourceType === 'image') { const link = document.createElement('a'); link.download = `SmartEditor_${Date.now()}.png`; link.href = window.editorCanvas.toDataURL('image/png'); link.click(); window.showToast("הקובץ הורד", false); } else { window.showToast("הורדת וידאו בגרסה זו נתמכת דרך ייצוא מקומי בענן בלבד.", true); } };
-
-        window.saveEditorToCloud = async () => {
-            if(!window.editorCanvas || window.editorCanvas.classList.contains('hidden')) return;
-            const user = window.auth?.currentUser; if (!user || !window.currentProfileId || localStorage.getItem('shoval_simulated_logout') === 'true') return window.showToast("יש להתחבר לפרופיל כדי לשמור בענן", true);
-            window.showToast("שומר ב-Cloud Files...", false);
-            try {
-                const dataUrl = window.editorCanvas.toDataURL('image/png'); const fileId = 'edit_' + Date.now().toString();
-                await window.setDoc(window.doc(window.db, "artifacts", window.appId, "users", user.uid, `files_${window.currentProfileId}`, fileId), { name: `תמונה_ערוכה_${new Date().toLocaleTimeString('he-IL')}.png`, type: 'image', fullType: 'image/png', size: Math.round(dataUrl.length*0.75), data: dataUrl, createdAt: new Date().toISOString() });
-                window.showToast("נשמר בהצלחה ב-Cloud Files!", false);
-            } catch(e) { window.showToast("שגיאת רשת בשמירה", true); }
         };
 
         window.generateAiImage = async () => {
@@ -991,7 +1100,6 @@
         };
 
         // --- 🎵 Smart Music Ultimate HTML5 ---
-        // מאגר שירים מקומי (Royalty Free + AI Placeholder Tracks)
         const localMusicLibrary = [
             { id: "m1", title: "Cyberpunk City", artist: "Smart Audio", url: "https://actions.google.com/sounds/v1/science_fiction/cyberpunk_city.ogg", cover: "🌆", type: "local" },
             { id: "m2", title: "Lo-Fi Study Beat", artist: "Chill Workspace", url: "https://actions.google.com/sounds/v1/water/rain_on_roof.ogg", cover: "🌧️", type: "local" },
@@ -1005,7 +1113,7 @@
 
         window.initMusicApp = () => { 
             window.switchMusicTab('itunes');
-            window.loadGlobalAiSongs(); // טען שירים ברקע
+            window.loadGlobalAiSongs(); 
         };
         
         window.switchMusicTab = (tabId) => {
@@ -1014,22 +1122,12 @@
                 const btn = document.getElementById(`musicTab_${id}`);
                 const view = document.getElementById(`musicView_${id}`);
                 if(btn) {
-                    if (id === tabId) {
-                        btn.classList.add('bg-green-600', 'text-white', 'shadow-md');
-                        btn.classList.remove('text-gray-400');
-                    } else {
-                        btn.classList.remove('bg-green-600', 'text-white', 'shadow-md');
-                        btn.classList.add('text-gray-400');
-                    }
+                    if (id === tabId) { btn.classList.add('bg-green-600', 'text-white', 'shadow-md'); btn.classList.remove('text-gray-400'); } 
+                    else { btn.classList.remove('bg-green-600', 'text-white', 'shadow-md'); btn.classList.add('text-gray-400'); }
                 }
                 if(view) {
-                    if (id === tabId) {
-                        view.classList.remove('hidden');
-                        view.classList.add('flex');
-                    } else {
-                        view.classList.add('hidden');
-                        view.classList.remove('flex');
-                    }
+                    if (id === tabId) { view.classList.remove('hidden'); view.classList.add('flex'); } 
+                    else { view.classList.add('hidden'); view.classList.remove('flex'); }
                 }
             });
 
@@ -1114,15 +1212,9 @@
                 const result = await res.json();
                 
                 let songData;
-                try {
-                    songData = JSON.parse(result.candidates[0].content.parts[0].text);
-                } catch(e) {
-                    throw new Error("Invalid JSON from AI");
-                }
+                try { songData = JSON.parse(result.candidates[0].content.parts[0].text); } catch(e) { throw new Error("Invalid JSON from AI"); }
 
-                // בחירת טראק רקע דינמי מהמאגר שלנו שישמש כ"ביט" לשיר ה-AI
                 const beatTrack = localMusicLibrary[Math.floor(Math.random() * localMusicLibrary.length)];
-
                 const user = window.auth.currentUser;
                 const authorName = user && !user.isAnonymous ? user.email.split('@')[0] : "יוצר אנונימי";
 
@@ -1131,14 +1223,13 @@
                     title: songData.title,
                     artist: `${authorName} (AI)`,
                     lyrics: songData.lyrics,
-                    url: beatTrack.url, // נשתמש בביט המקומי כשמע
+                    url: beatTrack.url, 
                     coverUrl: null,
                     emoji: ["🔥","🎸","🎹","🎤","🎧","✨"][Math.floor(Math.random()*6)],
                     type: 'ai',
                     createdAt: new Date().toISOString()
                 };
 
-                // שמירה לענן הציבורי
                 if (user && !user.isAnonymous && window.currentPlan === 'premium') {
                     const songRef = window.doc(window.db, "artifacts", window.appId, "public", "data", "ai_songs", finalSong.id);
                     await window.setDoc(songRef, finalSong);
@@ -1148,14 +1239,13 @@
                 }
 
                 promptInput.value = '';
-                window.playSmartMusic(finalSong); // נגן אותו מיד
+                window.playSmartMusic(finalSong);
 
             } catch (e) {
                 console.error(e);
                 window.showToast("שגיאה ביצירת השיר. נסה שוב.", true);
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = `✨ חולל שיר עכשיו`;
+                btn.disabled = false; btn.innerHTML = `✨ חולל שיר עכשיו`;
             }
         };
 
@@ -1169,7 +1259,6 @@
                 
                 let songs = [];
                 snap.forEach(doc => songs.push(doc.data()));
-                
                 songs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 if (songs.length === 0) {
@@ -1259,7 +1348,6 @@
                 document.getElementById('aiLyricsTitle').textContent = trackObj.title;
                 lyricsDisplay.classList.remove('hidden');
                 
-                // אנימציית גלילה למילים
                 const lines = trackObj.lyrics.split('\n').filter(l => l.trim().length > 0);
                 let currentLine = 0;
                 
@@ -1278,16 +1366,13 @@
                     }
                     currentLine++;
                     if(currentLine >= lines.length) clearInterval(aiSongInterval);
-                }, 3000); // מחליף שורה כל 3 שניות כסימולציה
+                }, 3000); 
                 
             } else {
                 lyricsDisplay.classList.add('hidden');
                 if(aiSongInterval) clearInterval(aiSongInterval);
             }
 
-            if(window.logActivity) window.logActivity(`האזין לשיר: ${trackObj.title}`);
-
-            // עדכון Progress Bar
             audio.ontimeupdate = () => {
                 const progress = document.getElementById('musicProgressBar');
                 const currTimeEl = document.getElementById('audioCurrentTime');
@@ -1538,6 +1623,22 @@
             const loader = document.getElementById('initialLoader');
             if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 500); }
             
+            const audio = document.getElementById('smartAudioElement');
+            const progress = document.getElementById('musicProgressBar');
+            const volume = document.getElementById('volumeSlider');
+            if(progress && audio) { 
+                progress.addEventListener('input', (e) => { 
+                    if (audio.duration) { 
+                        audio.currentTime = (e.target.value / 100) * audio.duration; 
+                    } 
+                }); 
+            }
+            if(volume && audio) { 
+                volume.addEventListener('input', (e) => { 
+                    audio.volume = e.target.value / 100; 
+                }); 
+            }
+
             window.setupCanvasEvents();
             if(window.startYtProgressTimer) window.startYtProgressTimer();
             
@@ -1555,4 +1656,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
